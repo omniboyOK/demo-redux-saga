@@ -1,12 +1,19 @@
-import React from 'react';
-import logo from './logo.svg';
-import { Counter } from './features/counter/Counter';
-import './App.css';
+import React from "react";
+import logo from "./logo.svg";
+import { Counter } from "./features/counter/Counter";
+import "./App.css";
+import SwitchTheme from "./features/switchTheme/SwitchTheme";
+import { useSelector } from "react-redux";
+import { selectTheme } from "./app/slices/theme/themeSlice";
+import { themes } from "./app/slices/theme/themes";
 
 function App() {
+  const theme = useSelector(selectTheme);
+
   return (
-    <div className="App">
+    <div className="App" style={themes[theme]}>
       <header className="App-header">
+        <SwitchTheme />
         <img src={logo} className="App-logo" alt="logo" />
         <Counter />
         <p>
