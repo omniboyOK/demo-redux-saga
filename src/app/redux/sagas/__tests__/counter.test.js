@@ -1,11 +1,13 @@
-import { takeLatest } from 'redux-saga/effects'
+import { takeLatest, call, put } from 'redux-saga/effects'
 import { runSaga } from 'redux-saga'
 import { incrementStart, increment } from '../../slices/counter/counterSlice'
-import { watchCounter, handleIncrementCounter } from '../counterSaga'
+import { handleIncrementCounter } from '../counterSaga'
 import { fetchCount } from '../../api/counterAPI'
 
+jest.mock('../../api/counterAPI');
+fetchCount.mockImplementation(() => 1);
 
-export const runSagaMock = async ({initialState, saga, initalAction}) => {
+export const runSagaMock = async ({initialState, saga, initialAction}) => {
     const dispatched = []
     const resp = await runSaga(
       {
@@ -13,7 +15,7 @@ export const runSagaMock = async ({initialState, saga, initalAction}) => {
         getState: () => initialState || {},
       },
       saga,
-      initalAction,
+      initialAction,
     )
     return {
       result: resp,
@@ -29,22 +31,33 @@ describe('counter sagas', () => {
   })
 
   describe('incrementStartWorker:', () => {  
-   
-    test('Should put incrementStart action, call api and put increment action with payload', async () => {
-        
-       
-        const {dispatched, result } = await runSagaMock({
+    let generator = null;
+    beforeAll(() => {
+       generator = handleIncrementCounter(1);
+    });
+
+    test('should call the fetchCount function', async () => {
+      const expected = call(fetchCount, undefined);
+      const actual = generator.next();
+      
+      expect(actual.value).toEqual(expected);
+  });
+
+    test('should put increment actions', async () => {
+      const expected = put(increment());
+      const actual = generator.next();      
+      expect(actual.value).toEqual(expected);
+  });
+
+
+    test('Should put incrementStart action, call fetchCount and put increment action with payload', async () => { 
+     
+      const {dispatched } = await runSagaMock({
             saga: handleIncrementCounter,
-            initalAction: incrementStart(1),
-            initialState: {
-              counter: {
-                isValid: false,
-                value: 0
-              },
-            },
+            initialAction: incrementStart,
           })
-        //TODO
-          //expect(dispatched[0]).toEqual(increment())
+          
+        expect(dispatched[0]).toEqual(increment())
     })
 
   })
