@@ -4,7 +4,7 @@ import {
   selectTheme,
   setDarkTheme,
   setWhiteTheme,
-} from "../../app/slices/theme/themeSlice";
+} from "../../app/redux/slices/theme/themeSlice";
 import styles from "./SwitchTheme.module.css";
 
 const SwitchTheme = () => {

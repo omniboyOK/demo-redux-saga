@@ -4,8 +4,8 @@ import { Counter } from "./features/counter/Counter";
 import "./App.css";
 import SwitchTheme from "./features/switchTheme/SwitchTheme";
 import { useSelector } from "react-redux";
-import { selectTheme } from "./app/slices/theme/themeSlice";
-import { themes } from "./app/slices/theme/themes";
+import { selectTheme } from "./app/redux/slices/theme/themeSlice";
+import { themes } from "./app/redux/slices/theme/themes";
 
 function App() {
   const theme = useSelector(selectTheme);
