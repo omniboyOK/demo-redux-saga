@@ -4,10 +4,9 @@ import {
   decrement,
   increment,
   incrementByAmount,
-  incrementAsync,
-  incrementIfOdd,
+  incrementStart,
   selectCount,
-} from "../../app/slices/counter/counterSlice";
+} from "../../app/redux/slices/counter/counterSlice";
 import styles from "./Counter.module.css";
 
 export function Counter() {
@@ -51,15 +50,9 @@ export function Counter() {
         </button>
         <button
           className={styles.asyncButton}
-          onClick={() => dispatch(incrementAsync(incrementValue))}
+          onClick={() => dispatch(incrementStart(incrementValue))}
         >
-          Add Async
-        </button>
-        <button
-          className={styles.button}
-          onClick={() => dispatch(incrementIfOdd(incrementValue))}
-        >
-          Add If Odd
+          Add with Saga
         </button>
       </div>
     </div>
